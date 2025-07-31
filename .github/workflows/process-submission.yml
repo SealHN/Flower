@@ -1,0 +1,76 @@
+name: Question Moderation
+
+on:
+  issues:
+    types: [opened, edited]
+  issue_comment:
+    types: [created]
+
+jobs:
+  moderate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for banned keywords
+        if: github.event_name == 'issues'
+        env:
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+        run: |
+          # 定义屏蔽词
+          BANNED_KEYWORDS=("刘卓君" "操你妈" "水泥" "钢筋" "筷子") # 替换为你的屏蔽词
+          
+          # 获取issue内容
+          BODY="${{ github.event.issue.body }}"
+          
+          # 检查屏蔽词
+          for word in "${BANNED_KEYWORDS[@]}"; do
+            if [[ "$BODY" == *"$word"* ]]; then
+              echo "::set-output name=contains_banned::true"
+              echo "::set-output name=banned_word::$word"
+              exit 0
+            fi
+          done
+          
+          echo "::set-output name=contains_banned::false"
+          
+      - name: Close issue if contains banned word
+        if: steps.check-keywords.outputs.contains_banned == 'true'
+        uses: actions/github-script@v5
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `此问题因包含"${{ steps.check-keywords.outputs.banned_word }}"已被自动关闭`
+            })
+            
+            await github.rest.issues.update({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'closed'
+            })
+            
+      - name: Process likes
+        if: contains(github.event.issue.labels.*.name, '匿名提问') && startsWith(github.event.comment.body, '/like')
+        uses: actions/github-script@v5
+        with:
+          script: |
+            // 获取当前点赞数
+            const likeLabel = context.payload.issue.labels.find(label => label.name.startsWith('likes-'));
+            const currentLikes = likeLabel ? parseInt(likeLabel.name.replace('likes-', '')) : 0;
+            
+            // 更新点赞标签
+            await github.rest.issues.update({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: [`likes-${currentLikes + 1}`]
+            });
+            
+            // 删除/like评论
+            await github.rest.issues.deleteComment({
+              comment_id: context.payload.comment.id,
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
