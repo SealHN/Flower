@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>匿名提问箱</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div id="adminButton" title="入口"><i class="fas fa-cog"></i></div>
+    
+    <!-- 登录弹窗 -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>彩蛋码输入</h2>
+            <input type="password" id="adminPassword" placeholder="输入彩蛋码">
+            <button id="submitAdminCode">确定</button>
+            <p id="adminMessage"></p>
+        </div>
+    </div>
+
+    <!-- 回复弹窗 -->
+    <div id="replyModal" class="modal">
+        <div class="modal-content">
+            <span class="close-reply">&times;</span>
+            <h2>回复提问</h2>
+            <p id="questionToReply"></p>
+            <textarea id="replyContent" placeholder="输入回复内容..."></textarea>
+            <button id="submitReply">提交回复</button>
+            <p id="replyMessage"></p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 顶部固定信息 -->
+        <header class="profile-header">
+            <img src="./b.png" alt="被提问人头像" class="profile-img">
+            <div class="profile-info">
+                <h1>JUN</h1>
+                <p class="fixed-message">欢迎大家来提问吖ˊᵒ̴̶̷̤ꇴᵒ̴̶̷̤ˋ </p>
+            </div>
+        </header>
+
+        <!-- 提问表单 -->
+        <section class="question-form">
+            <h2>匿名提问</h2>
+            <form id="questionForm">
+                <textarea id="questionContent" placeholder="输入你的问题..." required></textarea>
+                <button type="submit">提交问题</button>
+            </form>
+            <div id="formMessage"></div>
+        </section>
+
+        <!-- 问题列表 -->
+        <section class="question-list">
+            <h2>收到的提问</h2>
+            <div id="questionsContainer"></div>
+            <div class="pagination">
+                <button id="prevPage" disabled><i class="fas fa-chevron-left"></i> 上一页</button>
+                <span id="pageInfo">第 1 页</span>
+                <button id="nextPage">下一页 <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </section>
+    </div>
+
+    <footer class="site-footer">
+        <p>© 2025 匿名提问箱 | 请使用文明用语进行提问～</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
