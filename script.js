@@ -1,10 +1,10 @@
-// 配置
+。// 配置
 const REPO_OWNER = 'SealHN';
 const REPO_NAME = 'Flower';
 const LABEL_NAME = '匿名提问';
 const QUESTIONS_PER_PAGE = 5;
 const SECRET_LINK = "https://sealhn.github.io/Unweb"; // 替换为你想要跳转的网址
-
+。
 function encrypt(text, salt) {
   return btoa(encodeURIComponent(text + salt).split('').reverse().join(''));
 }
@@ -164,7 +164,7 @@ questionForm.addEventListener('submit', async (e) => {
         const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues`, {
             method: 'POST',
             headers: {
-                'Authorization': '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', // 需要有限制的token
+                'Authorization': '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。', // 需要有限制的token
                 'Content-Type': 'application/json',
                 'Accept': 'application/vnd.github.v3+json'
             },
@@ -338,7 +338,7 @@ async function submitQuestionReply() {
             {
                 method: 'POST',
                 headers: {
-                    'Authorization': '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',
+                    'Authorization': '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',
                     'Content-Type': 'application/json',
                     'Accept': 'application/vnd.github.v3+json'
                 },
