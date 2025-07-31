@@ -164,7 +164,7 @@ questionForm.addEventListener('submit', async (e) => {
         const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues`, {
             method: 'POST',
             headers: {
-                'Authorization': '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', // 需要有限制的token
+                'Authorization': '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', // 需要有限制的token
                 'Content-Type': 'application/json',
                 'Accept': 'application/vnd.github.v3+json'
             },
@@ -338,7 +338,7 @@ async function submitQuestionReply() {
             {
                 method: 'POST',
                 headers: {
-                    'Authorization': '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',
+                    'Authorization': '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',
                     'Content-Type': 'application/json',
                     'Accept': 'application/vnd.github.v3+json'
                 },
